@@ -7,17 +7,23 @@ import { ContactForm } from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
 import { ContactFilter } from '../ContactFilter/ContactFilter';
 import { Container, Title, Span, SubTitle, Text } from './App.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { createContacts, delContacts } from 'store/contactsSlice';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
-  });
+
+const { contacts } = useSelector(state => state.contacts)
+const dispatch = useDispatch()
+
+  // const [contacts, setContacts] = useState(() => {
+  //   return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
+  // });
 
   const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   const addContacts = data => {
     const newContact = {
@@ -38,10 +44,9 @@ export const App = () => {
         'Ok'
       );
     } else {
+      dispatch(createContacts(newContact))
       Notify.success(`You added a new contact: ${newContact.name}`);
     }
-
-    setContacts(contacts => [newContact, ...contacts]);
   };
 
   const findContacts = e => {
@@ -49,7 +54,8 @@ export const App = () => {
   };
 
   const deleteContacts = id => {
-    setContacts(prevState => prevState.filter(user => user.id !== id));
+    // setContacts(prevState => prevState.filter(user => user.id !== id));
+    dispatch(delContacts(id))
     Notify.success('Contact successfully deleted.');
   };
 
@@ -77,7 +83,7 @@ export const App = () => {
       {visibleContacts.length === 0 ? (
         <Text>Sorry, you don't have any contacts.</Text>
       ) : (
-        <ContactList data={visibleContacts} deleteContacts={deleteContacts} />
+        <ContactList data={contacts} deleteContacts={deleteContacts} />
       )}
     </Container>
   );
