@@ -33,8 +33,8 @@ export const App = () => {
     if (
       contacts.find(
         contact =>
-          contact.name.toLocaleLowerCase() ===
-          newContact.name.toLocaleLowerCase()
+          contact.name.toLowerCase().trim() ===
+          newContact.name.toLowerCase().trim()
       )
     ) {
       return Report.failure(
@@ -49,7 +49,7 @@ export const App = () => {
   };
 
   const findContacts = e => {
-    dispatch(onFilter(e.target.value));
+    dispatch(onFilter(e.target.value.toLowerCase().trim()));
   };
 
   const deleteContacts = id => {
