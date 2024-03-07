@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+// import { useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Report } from 'notiflix/build/notiflix-report-aio';
@@ -9,17 +9,16 @@ import { ContactFilter } from '../ContactFilter/ContactFilter';
 import { Container, Title, Span, SubTitle, Text } from './App.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { createContacts, delContacts } from 'store/contactsSlice';
+import { onFilter } from 'store/filterSlice';
 
 export const App = () => {
-
-const { contacts } = useSelector(state => state.contacts)
-const dispatch = useDispatch()
+  const { contacts } = useSelector(state => state.contacts);
+  const { filter } = useSelector(state => state.filter);
+  const dispatch = useDispatch();
 
   // const [contacts, setContacts] = useState(() => {
   //   return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
   // });
-
-  const [filter, setFilter] = useState('');
 
   // useEffect(() => {
   //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -44,18 +43,17 @@ const dispatch = useDispatch()
         'Ok'
       );
     } else {
-      dispatch(createContacts(newContact))
+      dispatch(createContacts(newContact));
       Notify.success(`You added a new contact: ${newContact.name}`);
     }
   };
 
   const findContacts = e => {
-    setFilter(e.currentTarget.value.toLowerCase());
+    dispatch(onFilter(e.target.value));
   };
 
   const deleteContacts = id => {
-    // setContacts(prevState => prevState.filter(user => user.id !== id));
-    dispatch(delContacts(id))
+    dispatch(delContacts(id));
     Notify.success('Contact successfully deleted.');
   };
 
@@ -67,6 +65,7 @@ const dispatch = useDispatch()
   };
 
   const visibleContacts = viewContacts();
+  console.log('visibleContacts', visibleContacts)
 
   return (
     <Container>
@@ -83,7 +82,7 @@ const dispatch = useDispatch()
       {visibleContacts.length === 0 ? (
         <Text>Sorry, you don't have any contacts.</Text>
       ) : (
-        <ContactList data={contacts} deleteContacts={deleteContacts} />
+        <ContactList data={visibleContacts} deleteContacts={deleteContacts} />
       )}
     </Container>
   );
