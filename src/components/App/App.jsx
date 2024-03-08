@@ -12,17 +12,10 @@ import { createContacts, delContacts } from 'store/contactsSlice';
 import { onFilter } from 'store/filterSlice';
 
 export const App = () => {
+  
   const { contacts } = useSelector(state => state.contacts);
   const { filter } = useSelector(state => state.filter);
   const dispatch = useDispatch();
-
-  // const [contacts, setContacts] = useState(() => {
-  //   return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
-  // });
-
-  // useEffect(() => {
-  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
 
   const addContacts = data => {
     const newContact = {

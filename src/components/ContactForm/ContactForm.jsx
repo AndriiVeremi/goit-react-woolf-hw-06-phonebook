@@ -3,15 +3,16 @@ import { RiUserAddLine } from 'react-icons/ri';
 import { Wrapper, Forma, Label, Input, Button } from './ContactForm.styled';
 
 export const ContactForm = ({ setContacts }) => {
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const handelChange = e => {
+
     switch (e.currentTarget.name) {
       case 'name':
         setName(e.currentTarget.value);
         break;
-
       case 'number':
         setNumber(e.currentTarget.value);
         break;

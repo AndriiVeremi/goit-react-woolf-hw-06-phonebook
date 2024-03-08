@@ -19,7 +19,6 @@ export const ContactFilter = ({ value, findContacts }) => {
         />
       </Label>
     );
-  
 }
 
 ContactFilter.propTypes = {
