@@ -58,7 +58,6 @@ export const App = () => {
   };
 
   const visibleContacts = viewContacts();
-  console.log('visibleContacts', visibleContacts)
 
   return (
     <Container>
