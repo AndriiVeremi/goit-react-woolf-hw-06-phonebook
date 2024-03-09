@@ -1,20 +1,27 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { createContacts } from 'store/contactsSlice';
 import { RiUserAddLine } from 'react-icons/ri';
 import { Wrapper, Forma, Label, Input, Button } from './ContactForm.styled';
+import { getContacts } from 'store/selectors';
 
-export const ContactForm = ({ setContacts }) => {
+export const ContactForm = () => {
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handelChange = e => {
+  const dispatch = useDispatch();
+  const { contacts } = useSelector(getContacts);
 
-    switch (e.currentTarget.name) {
+  const handelChange = e => {
+    switch (e.target.name) {
       case 'name':
-        setName(e.currentTarget.value);
+        setName(e.target.value);
         break;
       case 'number':
-        setNumber(e.currentTarget.value);
+        setNumber(e.target.value);
         break;
 
       default:
@@ -24,8 +31,22 @@ export const ContactForm = ({ setContacts }) => {
 
   const handelSubmit = e => {
     e.preventDefault();
-    setContacts({ name, number });
-    reset();
+
+    if (
+      contacts.some(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      return Report.failure(
+        'Sorry',
+        `Such contact "${name}" already exists in your phonebook.`,
+        'Ok'
+      );
+    } else {
+      dispatch(createContacts({name, number }));
+      Notify.success(`You added a new contact: ${name}`);
+      reset();
+    }
   };
 
   const reset = () => {

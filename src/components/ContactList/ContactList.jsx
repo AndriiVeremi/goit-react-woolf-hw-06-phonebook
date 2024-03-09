@@ -1,30 +1,35 @@
 import { ContactItem } from 'components/ContactItem/ContactItem';
-import PropTypes from 'prop-types';
 import { List } from './ContactList.styled';
+import { delContacts } from 'store/contactsSlice';
+import { useDispatch } from 'react-redux';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { getFilteredContacts } from 'store/selectors';
+import { useSelector } from 'react-redux';
 
-export const ContactList = ({ data, deleteContacts }) => {
+export const ContactList = () => {
+
+  const contacts = useSelector(getFilteredContacts)
+
+  const dispatch = useDispatch();
+  
+  const deleteContacts = id => {
+    dispatch(delContacts(id));
+    Notify.success('Contact successfully deleted.');
+  };
+
   return (
     <List>
-      {data.map(item => (
+      {contacts.map(item => (
         <ContactItem
           key={item.id}
           id={item.id}
           name={item.name}
           number={item.number}
-          deletContacts={deleteContacts}
+          deleteContacts={deleteContacts}
         />
       ))}
     </List>
   );
 };
 
-ContactList.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    }).isRequired
-  ),
-  deleteContacts: PropTypes.func.isRequired,
-};
+
