@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 export const ContactList = () => {
 
+  
   const contacts = useSelector(getFilteredContacts)
   const dispatch = useDispatch();
   
