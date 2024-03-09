@@ -19,3 +19,4 @@ ContactItem.protoTypes = {
   number: PropTypes.string.isRequired,
   deletContacts: PropTypes.func.isRequired
 }
+

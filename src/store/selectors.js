@@ -1,3 +1,5 @@
+import { Report } from 'notiflix/build/notiflix-report-aio';
+
 export const getContacts = store => store.contacts;
 export const getFilter = store => store.filter;
 export const getFilteredContacts = store => {
@@ -14,6 +16,11 @@ export const getFilteredContacts = store => {
 
   if (normalizedFilter && !visibleContacts.length) {
     alert('No contacts matching your request');
+    Report.info(
+      'Sorry',
+      'No contacts matching your request',
+      'Ok'
+    );
   }
 
   return visibleContacts;

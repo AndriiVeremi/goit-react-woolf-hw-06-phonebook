@@ -4,7 +4,6 @@ import { ContactList } from '../ContactList/ContactList';
 import { ContactFilter } from '../ContactFilter/ContactFilter';
 import { Container, Title, Span, SubTitle } from './App.styled';
 
-
 export const App = () => {
 
   return (
